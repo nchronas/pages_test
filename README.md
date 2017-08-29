@@ -546,15 +546,9 @@ The other critical factor for use in cubesats are the power dissipation. The add
 *(d)*
 *Power usage: with CLS (a,b), without (c,d)*
 
-![alt_text](cls_pwr.png)
-*(a)*
-![alt_text](cls_pwr_el.png)
-*(b)*
-![alt_text](pwr.png)
-*(c)*
-![alt_text](pwr_graph.png)
-*(d)*
-*Resource utilization in: with CLS (a,b), without (c,d)*
+![alt_text](cls_pwr.png) ![alt_text](cls_pwr_el.png)
+![alt_text](pwr.png) ![alt_text](pwr_graph.png)
+*Resource utilization with CLS and without*
 
 
 
