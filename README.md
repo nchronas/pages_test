@@ -263,18 +263,18 @@ For the first experimentations with the platform, I created an assembly program.
 
 The first experiment was to see the inner workings of the SoC and if everything was ok. For that reason a very simple program was loaded in the simulator. The program binary was loaded by hand, using the initial function of verilog, in the mem_tb module. The program did a continuous increment on the values of the x1 register. Using the signals generated from the simulation, I was able to verify to correct operation by looking into the instruction and data bus signals.
 
-'''
+```
   _start:
     nop
     addi x1, x1, 1
     nop
     nop
     j _start
-'''
+```
 
-Finally I wanted to see if my understanding of the core and peripherals connection was correct. For that reason I made a simple program that transmits a "Hello minion" message through the UART and then blinks the LEDs. The program it’s very simple, it first loads SFR and RAM variables memory addresses into registers. Those registers will be used later to access the contents of the SFR's through indirect memory addressing. The _print_str_ loop transmits the message, the _loop blinks the LEDs and after that the delay loops for ~100ms. You can find the code [here](https://github.com/nchronas/minion_subsystem/blob/01475229ce16e7232b76e183a83fb275c206d63a/software/asm_test/test.asm).
+Finally I wanted to see if my understanding of the core and peripherals connection was correct. For that reason I made a simple program that transmits a "Hello minion" message through the UART and then blinks the LEDs. The program it’s very simple, it first loads SFR and RAM variables memory addresses into registers. Those registers will be used later to access the contents of the SFR's through indirect memory addressing. The \_print\_str_ loop transmits the message, the \_loop blinks the LEDs and after that the delay loops for ~100ms. You can find the code [here](https://github.com/nchronas/minion_subsystem/blob/01475229ce16e7232b76e183a83fb275c206d63a/software/asm_test/test.asm).
 
-One of the most confusing issues that I had to face was to get used to how the memory locations were calculated in progmem. The instruction bus address to progmem leaves the 2 LSB bits core_instr_addr[15:2]. So any memory inside the progmem would had to be stored in a address shifted by 2 in order to correspond to the address request from the core e.g. The core’s boot address is 0x80 memory location, the instruction hex value had to be stored in the 0x20 memory location inside the progmem.
+One of the most confusing issues that I had to face was to get used to how the memory locations were calculated in progmem. The instruction bus address to progmem leaves the 2 LSB bits core\_instr\_addr[15:2]. So any memory inside the progmem would had to be stored in a address shifted by 2 in order to correspond to the address request from the core e.g. The core’s boot address is 0x80 memory location, the instruction hex value had to be stored in the 0x20 memory location inside the progmem.
 
 ## Minimal C
 
@@ -284,13 +284,13 @@ The program blinks the Arty LEDs, outputs the "hello minion" string in the UART 
 
 The necessary files to compile, link and use the software in the minion SoC were copied from the hello software. The bootstrap makefile was used as a template for the project and modified for use with the minimal C files.
 
-The minimal.c of the minimal program is very simple. It calls functions defined in the minion library. The minion library is a very primitive HAL for the minion SoC. The functions for the LED and the UART operation, were taken from the minion_lib library, found in the hello program. The functions were slight modified by adding a preprocessor definition for the peripheral's SFRs addresses, so the code is more clear to the user. The functions are pretty shelf explanatory: The to_led() outputs the data value to the LEDS and the from_dip returns the switches value. The blocking functions uart_recv() and uart_send() receives/sends a byte to the UART. The uart_send_buf outputs the contents of a buffer. The uart_bytes_available() returns the available bytes in the Rx FIFO, this function is used in conjunction with the uart_recv only when there is available bytes in the Rx FIFO so it won’t block the main routine waiting for an incoming byte. The uart_init() calls the uart_set_baud which sets the UART baud rate to 9600. In this version the value 651 for setting the baud rate is calculated by hand. Finally the uart_tx_status returns the Tx status of UART. A delay function was added with a approximately delay of 200ms. The delay is used from the example in order to make the change in the LEDs visible to the human eye. The utilities.c holds empty functions, needed from the linker script.
+The minimal.c of the minimal program is very simple. It calls functions defined in the minion library. The minion library is a very primitive HAL for the minion SoC. The functions for the LED and the UART operation, were taken from the minion\_lib library, found in the hello program. The functions were slight modified by adding a preprocessor definition for the peripheral's SFRs addresses, so the code is more clear to the user. The functions are pretty shelf explanatory: The to\_led() outputs the data value to the LEDS and the from\_dip returns the switches value. The blocking functions uart\_recv() and uart\_send() receives/sends a byte to the UART. The uart\_send\_buf outputs the contents of a buffer. The uart\_bytes\_available() returns the available bytes in the Rx FIFO, this function is used in conjunction with the uart\_recv only when there is available bytes in the Rx FIFO so it won’t block the main routine waiting for an incoming byte. The uart\_init() calls the uart\_set\_baud which sets the UART baud rate to 9600. In this version the value 651 for setting the baud rate is calculated by hand. Finally the uart\_tx\_status returns the Tx status of UART. A delay function was added with a approximately delay of 200ms. The delay is used from the example in order to make the change in the LEDs visible to the human eye. The utilities.c holds empty functions, needed from the linker script.
 
 A future expansion of the example could use the rest of the available peripherals in the minion SoC.
 
 ## Minimal C CLS version
 
-The minimal C CLS version has the same functionality with the minimal C but with a few modifications for the CLS configuration. The i variable is used for keeping the LED value even after a CLS triggered reset. During a reset all variables are initialized to zero. This operation is overridden by defining the i variable as a pointer and selecting the memory address by hand. The chosen memory location must be far away from the rest of the variables so it’s not overridden by accident. In a normal reset the variable should be initialized to 0. The reset_source function returns if the reset triggered from a CLS fault or from the general reset so it would initialize the variable. This solution is a bit hacky and in the future the linker script should be modified in order to incorporate this functionality.
+The minimal C CLS version has the same functionality with the minimal C but with a few modifications for the CLS configuration. The i variable is used for keeping the LED value even after a CLS triggered reset. During a reset all variables are initialized to zero. This operation is overridden by defining the i variable as a pointer and selecting the memory address by hand. The chosen memory location must be far away from the rest of the variables so it’s not overridden by accident. In a normal reset the variable should be initialized to 0. The reset\_source function returns if the reset triggered from a CLS fault or from the general reset so it would initialize the variable. This solution is a bit hacky and in the future the linker script should be modified in order to incorporate this functionality.
 
 # Ports
 
@@ -302,25 +302,25 @@ There were 2 main options for a simulator, the integrated simulator in the Vivad
 
 The rocket core verilator project was used as a template for porting into the minion SoC. The Makefile was modified in order to select the verilog files used from the minion SoC. Most of the work was to identify which files were actually used in the pulpino core.
 
-The minion SoC uses some modules that are Xilinx specific. The FIFO18E1.v file had the simulation implementation of the FIFO modules used. The file was taken from the Vivado installation. The progmem and datamem modules were using Xilinx modules that I couldn’t locate. The modules functionality were identical, also they were simply enough to recreate in a testbed module. Moreover using the verilogs $readmemh() function I was able to easily load the minimal C example running in the minion core. For the rest of the modules, dummy testbed modules was added in the xilinx_tb.v.
+The minion SoC uses some modules that are Xilinx specific. The FIFO18E1.v file had the simulation implementation of the FIFO modules used. The file was taken from the Vivado installation. The progmem and datamem modules were using Xilinx modules that I couldn’t locate. The modules functionality were identical, also they were simply enough to recreate in a testbed module. Moreover using the verilogs $readmemh() function I was able to easily load the minimal C example running in the minion core. For the rest of the modules, dummy testbed modules was added in the xilinx\_tb.v.
 
-Again the rocket core simulation module was used as a template for the veri_top.cc. The original file was stripped away so it would have  the minimal needed functionality for the minion SoC. Also the top signals were modified so it would reflect the signals used in the minion SoC. The global library files were directly copied into the project.
+Again the rocket core simulation module was used as a template for the veri\_top.cc. The original file was stripped away so it would have  the minimal needed functionality for the minion SoC. Also the top signals were modified so it would reflect the signals used in the minion SoC. The global library files were directly copied into the project.
 
-Running make in the vsim folder triggers the verilator program compilation. If everything is ok, the required files are stored into the obj_dir folder.
+Running make in the vsim folder triggers the verilator program compilation. If everything is ok, the required files are stored into the obj\_dir folder.
 
-The run_sim script is used to start a simulation. Every signal is saved in a vcd file during the simulation. After the simulation is finished, the minion SoC’s behaviour could be studied by viewing the generated waveforms, running the "gtkwave obj_dir/verilated.vcd" command. Moreover the verilog $display() function was used to display debug messages during the simulation.
+The run\_sim script is used to start a simulation. Every signal is saved in a vcd file during the simulation. After the simulation is finished, the minion SoC’s behaviour could be studied by viewing the generated waveforms, running the "gtkwave obj\_dir/verilated.vcd" command. Moreover the verilog $display() function was used to display debug messages during the simulation.
 
 ## Arty
 
 The nexus4ddr project was used as a template for the arty port. A new vivado project was created for the Arty port of the minion SoC. During The board files needed for vivado to support Arty, were imported by following the digilents guide found here. Again as in the verilator port, the most difficult task was to find which files were actually used from the minion SoC. That process was found through trial and error.
 
-The Xilinx clock IP (clk_wiz_arty_0) was added in the design, the wizard creates the clocks needed for the minion SoC, based on the parameters taken from the nexus4ddr. The pin_plan_arty constraint file was taken from Digilent’s github and modified so that it has all the information needed to map the I/O pins of the FPGA to the minion SoC design. Finally The top_arty.sv file connects the minion SoC with the clocking wizard and only the I/O pins used from the arty, Using the top arty file enables to have different configurations for each board ports, without needing to modify the minion_soc file, thus keeping it identical for all boards.    
+The Xilinx clock IP (clk\_wiz\_arty\_0) was added in the design, the wizard creates the clocks needed for the minion SoC, based on the parameters taken from the nexus4ddr. The pin\_plan\_arty constraint file was taken from Digilent’s github and modified so that it has all the information needed to map the I/O pins of the FPGA to the minion SoC design. Finally The top\_arty.sv file connects the minion SoC with the clocking wizard and only the I/O pins used from the arty, Using the top arty file enables to have different configurations for each board ports, without needing to modify the minion\_soc file, thus keeping it identical for all boards.    
 
 The arty and the nexus have different resources available, so the mapping is slight different. The 8 LEDs of the nexys were mapped to the RGB LEDs of the arty and not in the 4 LEDs. The reset is mapped to the reset button of the arty. The UART Rx & Tx was mapped to the onboard ftdi USB to serial converter. The arty doesn’t include onboard a SD card, VGA and PS2 peripheral so the pins are not mapped in the arty port. Digilent offers that peripherals in the form of PMOD extension boards, that can be used with the arty. In the future the port could be easily expanded to include the rest of the peripherals with the PMODS . The only reason that the PMODS weren’t included in the design from the beginning was that board wouldn’t arrived on time for me to use them.
 
 The project uses the code.v & data.v files from the minimal C example. The files are not included in the repository so the user would have to either compile the project or his own project.
 
-The SD peripherals clock wizard (clk_wiz_1 sd_clk_div) is not included in the repository as the clock wizards of the boards, so the user would have to either add it himself or if the SD peripheral is not used, remove the IP’s code in the minion SoC and directly assign the minion SoC clock to the SD clock " assign msoc_clock = sd_clk_o". A slight more difficult solution, if the user doesn’t want to use the SD peripheral, is to remove all SD functionality in the minion SoC.
+The SD peripherals clock wizard (clk\_wiz\_1 sd\_clk\_div) is not included in the repository as the clock wizards of the boards, so the user would have to either add it himself or if the SD peripheral is not used, remove the IP’s code in the minion SoC and directly assign the minion SoC clock to the SD clock " assign msoc\_clock = sd\_clk\_o". A slight more difficult solution, if the user doesn’t want to use the SD peripheral, is to remove all SD functionality in the minion SoC.
 
 <center>
 <table>
@@ -536,54 +536,15 @@ One of the key metrics of any protection techniques, is the changes in resources
 
 The other critical factor for use in cubesats are the power dissipation. The added 8mW is not an issue. Also the general power dissipation makes it usable for 2U cubesat, as In [UPSat](https://upsat.gr/) the onboard computer used 0.198W.
 
+![alt_text](cls_graph.png)
+![alt_text](cls_util.png)
+![alt_text](graph.png)
+![alt_text](util.png)
 
-<table>
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>(a)</td>
-    <td>(b)</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>(c)</td>
-    <td>(d)</td>
-  </tr>
-  <tr>
-    <td>Resource utilization in: with CLS (a,b), without (c,d)   </td>
-    <td></td>
-  </tr>
-</table>
-
-
-<table>
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>(a)</td>
-    <td>(b)</td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>(c)</td>
-    <td>(d)</td>
-  </tr>
-  <tr>
-    <td>Power usage: with CLS (a,b), without (c,d)   </td>
-    <td></td>
-  </tr>
-</table>
-
+![alt_text](cls_pwr.png)
+![alt_text](cls_pwr_el.png)
+![alt_text](pwr.png)
+![alt_text](pwr_graph.png)
 
 # Thoughts and future work
 
