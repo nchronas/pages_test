@@ -322,6 +322,7 @@ The project uses the code.v & data.v files from the minimal C example. The files
 
 The SD peripherals clock wizard (clk_wiz_1 sd_clk_div) is not included in the repository as the clock wizards of the boards, so the user would have to either add it himself or if the SD peripheral is not used, remove the IP’s code in the minion SoC and directly assign the minion SoC clock to the SD clock " assign msoc_clock = sd_clk_o". A slight more difficult solution, if the user doesn’t want to use the SD peripheral, is to remove all SD functionality in the minion SoC.
 
+<center>
 <table>
   <tr>
     <td>Component name</td>
@@ -348,7 +349,7 @@ The SD peripherals clock wizard (clk_wiz_1 sd_clk_div) is not included in the re
     <td>DRP</td>
   </tr>
 </table>
-
+</center>
 
 # Core Lock Step
 
@@ -420,19 +421,12 @@ The first tests were made in verilator. The verilog top module was modified in o
 
 After the successful testing in the simulator, the design was tested in the actual hardware. A Xilinx VIO debug IP was used to trigger and verify the fault injection. The VIO IP connects the Arty board through JTAG to the Vivado suite in real time. There the VIO inputs were used to monitor critical signals in order to verify the correct behaviour of the CLS configuration. A VIO output was connected to the fault injection unit, there a button in Vivado was used to trigger a fault. The minion SoC with fault injection unit along with the VIO IP required more LUTs that there were available in the Arty FPGA, I had to removed the SD peripheral in order to free resources. Also the fault injection unit was modified to allow only one signal to be used, in order to limit  resources usage.
 
-<table>
-  <tr>
-    <td></td>
-  </tr>
-  <tr>
-    <td>Fault injection in simulation. The fault is injected in the red cursor.</td>
-  </tr>
-</table>
+![alt_text](finj.png)
 
 
 ## Packetcraft
 
-In order to assess the CLS configuration, test application that simulates ---- was developed. The application implements the test service, a subset of the command and data handling protocol, running on UPSat. The test service is the equivalent ping of the computer networks. The user sends a test service telecommand and the subsystem, which in our case is the Arty, responds with a telecommand. For more information about the protocol see the ECSS-E70-41A specification.
+In order to assess the CLS configuration, a test application was developed. The application implements the test service, a subset of the command and data handling protocol, running on UPSat. The test service is the equivalent ping of the computer networks. The user sends a test service telecommand and the subsystem, which in our case is the Arty, responds with a telecommand. For more information about the protocol see the ECSS-E70-41A specification.
 
 The packet.py sends continuously a test packet and counts the responses from the Arty, while it randomly triggers a fault injection. If there is a difference between the number of packets sent and received, it would mean that something went wrong due to the fault injection. The fault injection is triggered by an Arduino connected to the fault injection pin in the Arty.
 
@@ -440,6 +434,7 @@ The minion SoC runs with a CLS and fault injection configuration. The test_packe
 
 For the test I started to find which Tx period (packets send from packet.py), is the limit that the SoC starts losing packets without fault injection. The SoC had 20% packet losses in the a Tx period of 0.08 which is very good as the application is not optimized and the tx packet takes 0.01 sec to transmit. After that I started to find the fault injection interval that the SoC starts losing packets.  At average of one fault injection per 0.025 sec, the SoC had 1.2% packet losses, at 0.01 sec there was 39.6, while at 0.005 there was 100% packet loss. This is very promising results since the expected rate of faults induced by radiation is farr less than that.
 
+<center>
 <table>
   <tr>
     <td>Tx period (Sec)</td>
@@ -487,7 +482,7 @@ For the test I started to find which Tx period (packets send from packet.py), is
     <td>100</td>
   </tr>
 </table>
-
+</center>
 
 ## Code generation
 
@@ -540,6 +535,7 @@ Note that this code is still under development so it is possible that it contain
 One of the key metrics of any protection techniques, is the changes in resources usage. In this section the resource usage of the CLS configuration and the original SoC are reported. As we can see in the tables, the CLS has 26.47% overhead in LUTs, 3.51% in flip flops, 6.66% in DSP. The other resources remain the same (the BUFG are not taken into account).
 
 The other critical factor for use in cubesats are the power dissipation. The added 8mW is not an issue. Also the general power dissipation makes it usable for 2U cubesat, as In [UPSat](https://upsat.gr/) the onboard computer used 0.198W.
+
 
 <table>
   <tr>
