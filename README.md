@@ -35,11 +35,11 @@ export PATH=$PATH:$VERILATOR_ROOT/bin
 
 ### Vivado
 
-A guide about installing Vivado can be found in lowRISC documentation. One difference from the guide is that in my installation that I used the following command "source /local/tool/Xilinx/Vivado/2015.4/.settings64-Vivado.sh". It’s generally pretty straightforward installation but it took a while to finish. 
+A guide about installing Vivado can be found in lowRISC documentation. One difference from the guide is that in my installation that I used the following command 'source /local/tool/Xilinx/Vivado/2015.4/.settings64-Vivado.sh'. It’s generally pretty straightforward installation but it took a while to finish. 
 
 ### Arty
 
-While this is not needed in order to run the project, I think it might be helpful. In order to use the Arty board in Vivado for a new project, this [guide](https://reference.digilentinc.com/learn/software/tutorials/vivado-board-files/start) should be followed. 
+While this is not needed in order to run the project, I think it might be helpful. In order to use the Arty board in Vivado for a new project, this [guide](https://reference.digilentinc.com/learn/software/tutorials/vivado-board-files/start) should be followed.
 
 ### compiler
 
@@ -49,7 +49,7 @@ The minion core uses a patched GCC compiler, found [here](https://github.com/pul
 
 The code for the minion SoC can be found in the lowRISC minion subsystem [repository](https://github.com/lowRISC/minion_subsystem). The branch that all my work is derived from is the minion-v0.4. Clone either the lowRISC repository or my [fork](https://github.com/nchronas/minion_subsystem). For cloning the repository, git should be installed.
 
-In order to compile software for the minion SoC, the romgen program must be compiled. The romgen uses OCaml, so it has to be installed in the system in order to compile it, install it by apt-get install ocaml. 
+In order to compile software for the minion SoC, the romgen program must be compiled. The romgen uses OCaml, so it has to be installed in the system in order to compile it, install it by apt-get install ocaml.
 
 ### Code generation
 
@@ -75,9 +75,9 @@ After preparing the environment, the next steps are required to run the examples
 
 4. For running verilator, the following steps are required.
 
-    1. This step is not necessary but it will make simulation a lot quicker by shortening the delay time. Replace the REAL_DELAY with the SIM_DELAY found in the delay function in the minion.c file  and recompile the software. 
+    1. This step is not necessary but it will make simulation a lot quicker by shortening the delay time. Replace the REAL_DELAY with the SIM_DELAY found in the delay function in the minion.c file  and recompile the software.
 
-    2. Next the verilator simulator is compiled. Go to the vsim folder and run "make" for running the minion SoC without CLS. Running “make cls” will produce the simulation for the CLS configuration and finally the “make finj” will be used for CLS with fault injection. Note that the configuration would have to be the same with the one generated e.g. running the SoC without CLS while compiling verilator with cls, will result in an error. 
+    2. Next the verilator simulator is compiled. Go to the vsim folder and run "make" for running the minion SoC without CLS. Running “make cls” will produce the simulation for the CLS configuration and finally the “make finj” will be used for CLS with fault injection. Note that the configuration would have to be the same with the one generated e.g. running the SoC without CLS while compiling verilator with cls, will result in an error.
 
     3. Start the simulation by running ./run_sim.sh. If the configuration is "finj" the simulation will provide a simple menu for triggering the fault injection. Stop the simulation by using ctrl^c.
 
@@ -155,7 +155,7 @@ The coremem design assumes that all peripherals are able to write the data into 
 
 The minion SoC uses a custom tight coupled bus for communication of the core with the peripherals and the memories. For the core’s instruction bus, the ROM is directly connected with the coremem_i module that handles the protocol handshakes.
 
-The bus addresses are taken from the core’s 4 MSBs data bus addresses in one hot configuration, creating 16 distinct memory regions. Each of the 16 memory regions are mapped to each peripheral and memories. 
+The bus addresses are taken from the core’s 4 MSBs data bus addresses in one hot configuration, creating 16 distinct memory regions. Each of the 16 memory regions are mapped to each peripheral and memories.
 
 The peripherals and memories are using the  one_hot_rdata[15:0] array that each position is related with the equivalent address, to store the preselected information. That way the peripheral's SFRs are created. The read operation and bus address creation happens in a always_comb block. The 16 loops that happens in the for loop corresponds to the 16 bus addresses. The address is created when the core_lsu_addr[23:20] is equal to the address number. Finally the correct read data is stored in the core_lsu_rdata, selecting the one_hot_data_addr array element that is equal to the bus address.
 
@@ -178,7 +178,7 @@ assign one_hot_rdata[3] = {uart_wrcount,uart_almostfull,uart_full,uart_rderr,uar
 </table>
 
 
-Writing operations are triggered when the we_d signal is set, along with the corresponding one_hot_data_addr. The peripheral write operations happens in the following always block that is triggered in a reset or a positive cycle edge. If a reset is set, the SFRs take a default value. 
+Writing operations are triggered when the we_d signal is set, along with the corresponding one_hot_data_addr. The peripheral write operations happens in the following always block that is triggered in a reset or a positive cycle edge. If a reset is set, the SFRs take a default value.
 
 <table>
   <tr>
@@ -294,7 +294,7 @@ The SoC uses one RAM memory to hold variables and a ROM to hold the program runn
 
 ## Peripherals
 
-The minion SoC has the following peripherals integrated: 
+The minion SoC has the following peripherals integrated:
 
 1. UART.
 
@@ -312,15 +312,15 @@ The GPIO operation is pretty straightforward. There is a SFR that you can write 
 
 There are 3 SFRs for the UART.
 
-1. a status SFR that has information about the state of the UART, plus the value of an incoming byte. 
+1. a status SFR that has information about the state of the UART, plus the value of an incoming byte.
 
 2. A SFR that holds the value for baud rate generation.
 
-3. The Tx byte SFR. 
+3. The Tx byte SFR.
 
 A Tx operation happens when the Tx value is send to Tx SFR and if the UART is not currently transmitting. For a Rx operation, the UART has a FIFO connected to the Rx line. The read operation is triggered by making a write operation in the status SFR. When that happens the FIFO stores the value in the 8 LSBs of the status SFR.
 
-The baud rate calculation uses the following equation: SFR value = clock frequency/ (baud rate * 4). For the arty project that has 25MHz frequency and a 9600 baud rate, the equation is modified to 25.000.000 / (9600 * 4) = 651. 
+The baud rate calculation uses the following equation: SFR value = clock frequency/ (baud rate * 4). For the arty project that has 25MHz frequency and a 9600 baud rate, the equation is modified to 25.000.000 / (9600 * 4) = 651.
 
 # Modifications
 
@@ -328,7 +328,7 @@ During the designing phase of the CLS configuration, I identified some improveme
 
 ## Coremem
 
-While examining the coremem module, I saw that the code had unreached states (WRITE_DATA, WRITE_ADDR) because of constant assignment of aw_ready_i, ar_ready_i and w_ready_i signals. The states could further reduced from READ_WAIT, WRITE_WAIT to WAIT but I left it that way because I think code is more readable. Removing the unnecessary code simplified the module, which was then now reduced to a simple one cycle delay. 
+While examining the coremem module, I saw that the code had unreached states (WRITE_DATA, WRITE_ADDR) because of constant assignment of aw_ready_i, ar_ready_i and w_ready_i signals. The states could further reduced from READ_WAIT, WRITE_WAIT to WAIT but I left it that way because I think code is more readable. Removing the unnecessary code simplified the module, which was then now reduced to a simple one cycle delay.
 
 Moreover it was found in multiple places in the minion_soc, that the core_lsu_req&core_lsu_we signals were used to access a peripheral in the case of a data bus write. That functionality was identical with the use of the coremem_d’s signal we_d. So all the signals were replaces from the we_d signal. That modification gives a clearer code, with the write of peripherals trigged only from one place.
 
@@ -340,17 +340,17 @@ uart_rdcount.
 
 ## Peripheral modularisation.
 
-The SoC uses a custom tight coupled bus for the connection not based on AXI. In the minion_soc.sv there is the bus implementation and the connection of the core, with the RAM,ROM and the peripherals used. This makes the code less clear and more difficult add new peripherals. I made an attempt to separate the bus logic and the peripherals from the minion SoC, so the code is more clear and for me to better understand the bus logic. This attempt provided useful information that was eventually used in the code generation. IMO this approach lead to more clear & concise code. 
+The SoC uses a custom tight coupled bus for the connection not based on AXI. In the minion_soc.sv there is the bus implementation and the connection of the core, with the RAM,ROM and the peripherals used. This makes the code less clear and more difficult add new peripherals. I made an attempt to separate the bus logic and the peripherals from the minion SoC, so the code is more clear and for me to better understand the bus logic. This attempt provided useful information that was eventually used in the code generation. IMO this approach lead to more clear & concise code.
 
 The peripheral bus has the bus address, bus_write and bus_read array, which have the same functionality as the original bus signals. The extra bus_we & bus_ce arrays, are added. The variables are used to signal a read or write operation in the bus.  Each peripheral must access the corresponding bus_we & bus_ce by selecting the correct array member. The peripherals are then responsible to read or write the correct SFR based on the bus address.
 
-The memconfig module (the naming could had been better) has all the bus functionality and is responsible for the core and peripheral interaction. The module generates the bus_we and bus_ce signals. The module also integrates the coremem_d, the module that handles the core's data bus operations. The signals are generated in the similar way as the data read signals in the core's data bus. 
+The memconfig module (the naming could had been better) has all the bus functionality and is responsible for the core and peripheral interaction. The module generates the bus_we and bus_ce signals. The module also integrates the coremem_d, the module that handles the core's data bus operations. The signals are generated in the similar way as the data read signals in the core's data bus.
 
 Note that this code was left unfinished so it is possible that it contains bugs. In the future that work could be merged with the code generation in the form of templates.
 
 # Software
 
-This section describes the software developed for running in the minion SoC. 
+This section describes the software developed for running in the minion SoC.
 
 ## minimal assembly
 
@@ -382,7 +382,7 @@ The first experiment was to see the inner workings of the SoC and if everything 
 
 Finally I wanted to see if my understanding of the core and peripherals connection was correct. For that reason I made a simple program that transmits a "Hello minion" message through the UART and then blinks the LEDs. The program it’s very simple, it first loads SFR and RAM variables memory addresses into registers. Those registers will be used later to access the contents of the SFR's through indirect memory addressing. The _print_str_ loop transmits the message, the _loop blinks the LEDs and after that the delay loops for ~100ms. You can find the code [here](https://github.com/nchronas/minion_subsystem/blob/01475229ce16e7232b76e183a83fb275c206d63a/software/asm_test/test.asm).
 
-One of the most confusing issues that I had to face was to get used to how the memory locations were calculated in progmem. The instruction bus address to progmem leaves the 2 LSB bits core_instr_addr[15:2]. So any memory inside the progmem would had to be stored in a address shifted by 2 in order to correspond to the address request from the core e.g. The core’s boot address is 0x80 memory location, the instruction hex value had to be stored in the 0x20 memory location inside the progmem. 
+One of the most confusing issues that I had to face was to get used to how the memory locations were calculated in progmem. The instruction bus address to progmem leaves the 2 LSB bits core_instr_addr[15:2]. So any memory inside the progmem would had to be stored in a address shifted by 2 in order to correspond to the address request from the core e.g. The core’s boot address is 0x80 memory location, the instruction hex value had to be stored in the 0x20 memory location inside the progmem.
 
 ## Minimal C
 
@@ -394,7 +394,7 @@ The necessary files to compile, link and use the software in the minion SoC were
 
 The minimal.c of the minimal program is very simple. It calls functions defined in the minion library. The minion library is a very primitive HAL for the minion SoC. The functions for the LED and the UART operation, were taken from the minion_lib library, found in the hello program. The functions were slight modified by adding a preprocessor definition for the peripheral's SFRs addresses, so the code is more clear to the user. The functions are pretty shelf explanatory: The to_led() outputs the data value to the LEDS and the from_dip returns the switches value. The blocking functions uart_recv() and uart_send() receives/sends a byte to the UART. The uart_send_buf outputs the contents of a buffer. The uart_bytes_available() returns the available bytes in the Rx FIFO, this function is used in conjunction with the uart_recv only when there is available bytes in the Rx FIFO so it won’t block the main routine waiting for an incoming byte. The uart_init() calls the uart_set_baud which sets the UART baud rate to 9600. In this version the value 651 for setting the baud rate is calculated by hand. Finally the uart_tx_status returns the Tx status of UART. A delay function was added with a approximately delay of 200ms. The delay is used from the example in order to make the change in the LEDs visible to the human eye. The utilities.c holds empty functions, needed from the linker script.
 
-A future expansion of the example could use the rest of the available peripherals in the minion SoC. 
+A future expansion of the example could use the rest of the available peripherals in the minion SoC.
 
 ## Minimal C CLS version
 
@@ -412,7 +412,7 @@ The rocket core verilator project was used as a template for porting into the mi
 
 The minion SoC uses some modules that are Xilinx specific. The FIFO18E1.v file had the simulation implementation of the FIFO modules used. The file was taken from the Vivado installation. The progmem and datamem modules were using Xilinx modules that I couldn’t locate. The modules functionality were identical, also they were simply enough to recreate in a testbed module. Moreover using the verilogs $readmemh() function I was able to easily load the minimal C example running in the minion core. For the rest of the modules, dummy testbed modules was added in the xilinx_tb.v.
 
-Again the rocket core simulation module was used as a template for the veri_top.cc. The original file was stripped away so it would have  the minimal needed functionality for the minion SoC. Also the top signals were modified so it would reflect the signals used in the minion SoC. The global library files were directly copied into the project. 
+Again the rocket core simulation module was used as a template for the veri_top.cc. The original file was stripped away so it would have  the minimal needed functionality for the minion SoC. Also the top signals were modified so it would reflect the signals used in the minion SoC. The global library files were directly copied into the project.
 
 Running make in the vsim folder triggers the verilator program compilation. If everything is ok, the required files are stored into the obj_dir folder.
 
@@ -424,7 +424,7 @@ The nexus4ddr project was used as a template for the arty port. A new vivado pro
 
 The Xilinx clock IP (clk_wiz_arty_0) was added in the design, the wizard creates the clocks needed for the minion SoC, based on the parameters taken from the nexus4ddr. The pin_plan_arty constraint file was taken from Digilent’s github and modified so that it has all the information needed to map the I/O pins of the FPGA to the minion SoC design. Finally The top_arty.sv file connects the minion SoC with the clocking wizard and only the I/O pins used from the arty, Using the top arty file enables to have different configurations for each board ports, without needing to modify the minion_soc file, thus keeping it identical for all boards.    
 
-The arty and the nexus have different resources available, so the mapping is slight different. The 8 LEDs of the nexys were mapped to the RGB LEDs of the arty and not in the 4 LEDs. The reset is mapped to the reset button of the arty. The UART Rx & Tx was mapped to the onboard ftdi USB to serial converter. The arty doesn’t include onboard a SD card, VGA and PS2 peripheral so the pins are not mapped in the arty port. Digilent offers that peripherals in the form of PMOD extension boards, that can be used with the arty. In the future the port could be easily expanded to include the rest of the peripherals with the PMODS . The only reason that the PMODS weren’t included in the design from the beginning was that board wouldn’t arrived on time for me to use them. 
+The arty and the nexus have different resources available, so the mapping is slight different. The 8 LEDs of the nexys were mapped to the RGB LEDs of the arty and not in the 4 LEDs. The reset is mapped to the reset button of the arty. The UART Rx & Tx was mapped to the onboard ftdi USB to serial converter. The arty doesn’t include onboard a SD card, VGA and PS2 peripheral so the pins are not mapped in the arty port. Digilent offers that peripherals in the form of PMOD extension boards, that can be used with the arty. In the future the port could be easily expanded to include the rest of the peripherals with the PMODS . The only reason that the PMODS weren’t included in the design from the beginning was that board wouldn’t arrived on time for me to use them.
 
 The project uses the code.v & data.v files from the minimal C example. The files are not included in the repository so the user would have to either compile the project or his own project.
 
@@ -490,7 +490,7 @@ Since operations on registers are often and in C when a function is used, it loa
 
 The first and easiest fault handling is that the CLS unit resets the CPU cores. Since it doesn’t reset the RAM or other peripherals, the program could be written in a way that assumes operation as quickly as possible.
 
-Another solution could be that the CLS unit generates an exception, either by modifying the CPU core in order to add the exception or by assigning an interrupt. The interrupt approach better because is simpler and doesn’t need any CPU modification. 
+Another solution could be that the CLS unit generates an exception, either by modifying the CPU core in order to add the exception or by assigning an interrupt. The interrupt approach better because is simpler and doesn’t need any CPU modification.
 
 Finally checkpoints could be used to restore the faulty CPU in the last know healthy state. The checkpoints could be either introduced automatically or manual from the developer. The checkpoint functionality should be achieved with the support of software and hardware:
 
@@ -498,7 +498,7 @@ Finally checkpoints could be used to restore the faulty CPU in the last know hea
 
 2. Software: Since it’s not easy to store the exact state of the CPU (registers) the program execution should be altered so when a checkpoint is used, it is ensured that no previous values in registers are used.
 
-One of the advantages of triple core lock step is that by having 3 cores using voting, the core that generated the issue could be found. Using a restore mechanism like checkpoints or exceptions, the faulty core could be re synched in a few cycles, thus removing the need to restart the program. 
+One of the advantages of triple core lock step is that by having 3 cores using voting, the core that generated the issue could be found. Using a restore mechanism like checkpoints or exceptions, the faulty core could be re synched in a few cycles, thus removing the need to restart the program.
 
 ## Implementation
 
@@ -514,7 +514,7 @@ The cls_handler_unit handles any faults detected from the compare unit. Since th
 
 Besides the minion_cls, the coremem module was modified in order to ensure fault containment.  In the case that a fault happens during a data write operation, there is a chance that the erroneous operation happens before the handler unit issues a reset. For that reason the coremem module is modified in order to introduce one extra cycle delay during write operations. The module delays setting the ce, we signals to the peripherals and the data grant signal to the cores.
 
-A reset source SFR was added, the SFR has 0 if the reset was triggered from a normal reset and 1 if the reset was triggered by a CLS fault. That way the software knows the reset source. 
+A reset source SFR was added, the SFR has 0 if the reset was triggered from a normal reset and 1 if the reset was triggered by a CLS fault. That way the software knows the reset source.
 
 ## fault injection
 
@@ -522,7 +522,7 @@ Faults were simulated by injecting errors in the CLS design. These tests were th
 
 The fault_injection_assist module was introduced in the minion_cls.sv. The module overrides the cores outputs and when a fault injection was issued it toggled the selected signal. The new signals are defined in the minion_cls module. In order to use the fault injection, a "_finj" should be added in the signal name, going to the cls comparison module. The modules internal implementation uses the fault_injection_mux module which is a simple multiplexer. In normal operation, the multiplexer forwarded the incoming signal value to the output. If a fault injection was requested and the index matched the multiplexer, it toggled the incoming signal’s value. The first implementations tried to modify the existing signals kby XORing to itself but that created an infinite feedback loop.
 
-One key issue was finding the best approach for the fault injection timing. Without a model of the SEU generation in space, the best way was to inject faults pseudo randomly in a time range that would make sense. The first attempt was to use a hardware pseudo random generator but it was quickly abandoned for a more swift solution, implemented in software. In the beginning all the output signals were exposed to a fault injection but in order to make testing simplier and reduce the used FPGA resources, only the data and instruction bus  request and address signals were used. 
+One key issue was finding the best approach for the fault injection timing. Without a model of the SEU generation in space, the best way was to inject faults pseudo randomly in a time range that would make sense. The first attempt was to use a hardware pseudo random generator but it was quickly abandoned for a more swift solution, implemented in software. In the beginning all the output signals were exposed to a fault injection but in order to make testing simplier and reduce the used FPGA resources, only the data and instruction bus  request and address signals were used.
 
 The first tests were made in verilator. The verilog top module was modified in order to expose the fault generation and signal index to the  verilator C++ program. In verilator test program a simple menu was created, where the user selected from the terminal if there would be a fault injection and in what signal. The menu was triggered by C++ pseudo random generator. As it was noted above in the first implementations of the fault injection unit a XOR was used in the affected signals. When the implementation was tested in the verilator, a non convergence error was triggered, that lead to the discovery of the bad design. Due to the added resources, the running simulation took longer to evaluate, so the delay running in the main loop of the minion hardware was reduced.
 
@@ -603,15 +603,15 @@ The minion SoC functionality is implemented in the minion_soc.sv. In that file t
 
 For that reason I made a generator that takes a JSON configuration file and produces the minion SoC. The project is still a work in progress and not a full working project. Using the generator in the future enables users to easily use the Core Lock Step configuration without writing code.
 
-The generator is based on python and jinja2 for the templating engine. Other options that were consider was the use of Chisel, myHDL and pyHDL but a simpler solution in terms of dependencies and ease to use, was preferred. One design intention was the minimal verilog code modification for the template. 
+The generator is based on python and jinja2 for the templating engine. Other options that were consider was the use of Chisel, myHDL and pyHDL but a simpler solution in terms of dependencies and ease to use, was preferred. One design intention was the minimal verilog code modification for the template.
 
 The JSON configuration file holds the configuration parameters of each module. The usual options are the peripheral’s name, the memory region that it uses and if the module could be used multiple times the module’s number. Each module could have it’s own specific parameters.
 
 The CLS configuration in core is enabled by setting the core_lockstep parameter to true. In the case fault injection is needed, the fault_injection must be set to true. The fault injection trigger is set by selecting either a pin, a button or a VIO IP module.
 
-The templates were derived from the minion_soc.sv. Each template could have: 
+The templates were derived from the minion_soc.sv. Each template could have:
 
-a) a port template that defines the module's I/O ports, if the module has I/O ports. 
+a) a port template that defines the module's I/O ports, if the module has I/O ports.
 
 b) an instance template that defines the peripheral, along with any variable that is needed. This template usually has the read SFRs and the memory region that it uses. Finally if the peripheral could be used multiple times e.g. UART, all the names of variables and modules uses a peripheral_number template variable in order to distinguish itself from each different peripheral instance.
 
@@ -641,7 +641,7 @@ The  generator creates the minion_soc.sv, coremem.sv, top_arty.sv and the minion
 
 The peripherals use memory mapped SFRs to exchange information with the core. The memory location of each SFR is used in the HAL from the software running in the SoC. One of the key aspects of the code generation is the ability to quickly modify each peripherals SFR memory region without requiring to rewrite the HAL by generating the file that holds the memory locations.
 
-Note that this code is still under development so it is possible that it contains bugs. Currently the more than 1 UARTs implementation doesn’t work. 
+Note that this code is still under development so it is possible that it contains bugs. Currently the more than 1 UARTs implementation doesn’t work.
 
 ## CLS power and size differences
 
@@ -704,4 +704,3 @@ One of the reasons that I started the GSoC project was get more familiar with HD
 After the GSoC I would like to continue working in the code generation project. Using the code generation made design & testing simpler. I wish I started working in the project earlier in the summer.
 
 Finally I would like to thank my mentor, Alex Bradbury for his help and patience, Mr Aris Stathakis that lend me his arty board and Google for making GSoC.
-
