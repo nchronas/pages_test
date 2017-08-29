@@ -325,27 +325,27 @@ The SD peripherals clock wizard (clk_wiz_1 sd_clk_div) is not included in the re
 <center>
 <table>
   <tr>
-    <td>Component name</td>
+    <td align="left">Component name</td>
     <td>clk_wiz_1</td>
   </tr>
   <tr>
-    <td>Input clock frequency</td>
+    <td align="left">Input clock frequency</td>
     <td>25 MHz</td>
   </tr>
   <tr>
-    <td>Output clock frequency </td>
+    <td align="left">Output clock frequency </td>
     <td>5MHz</td>
   </tr>
   <tr>
-    <td>Output clock clk_out1 name</td>
+    <td align="left">Output clock clk_out1 name</td>
     <td>clk_sdclk</td>
   </tr>
   <tr>
-    <td>Dynamic reconfig</td>
+    <td align="left">Dynamic reconfig</td>
     <td>enabled</td>
   </tr>
   <tr>
-    <td>Dynamic reconfig interface options</td>
+    <td align="left">Dynamic reconfig interface options</td>
     <td>DRP</td>
   </tr>
 </table>
