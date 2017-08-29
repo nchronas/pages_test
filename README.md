@@ -540,45 +540,28 @@ One of the key metrics of any protection techniques, is the changes in resources
 
 The other critical factor for use in cubesats are the power dissipation. The added 8mW is not an issue. Also the general power dissipation makes it usable for 2U cubesat, as In [UPSat](https://upsat.gr/) the onboard computer used 0.198W.
 
-<center>
-<table>
-  <tr>
-    <td> <image src="cls_graph.png"> </td>
-    <td> <image src="cls_util.png"> </td>
-  </tr>
-  <tr>
-    <td>(a)</td>
-    <td>(b)</td>
-  </tr>
-  <tr>
-    <td><image src="graph.png"> </td>
-    <td><image src="util.png"> </td>
-  </tr>
-  <tr>
-    <td>(c)</td>
-    <td>(d)</td>
-  </tr>
-</table>
-</center>
+![alt_text](cls_graph.png)
+*(a)*
+![alt_text](cls_util.png)
+*(b)*
+![alt_text](graph.png)
+*(c)*
+![alt_text](util.png)
+*(d)*
+*Power usage: with CLS (a,b), without (c,d)*
+
+![alt_text](cls_pwr.png)
+*(a)*
+![alt_text](cls_pwr_el.png)
+*(b)*
+![alt_text](pwr.png)
+*(c)*
+![alt_text](pwr_graph.png)
+*(d)*
 *Resource utilization in: with CLS (a,b), without (c,d)*
 
-<center>
-<table>
-  <tr>
-    <td><image src="cls_pwr.png"></td>
-    <td><image src="cls_pwr_el.png"></td>
-  </tr>
-  <td>(a)</td>
-  <td>(b)</td>
-  <tr>
-    <td><image src="pwr.png"></td>
-    <td><image src="pwr_graph.png"></td>
-  </tr>
-  <td>(c)</td>
-  <td>(d)</td>
-</table>
-</center>
-*Power usage: with CLS (a,b), without (c,d)*
+
+
 
 # Thoughts and future work
 
