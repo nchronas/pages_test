@@ -91,7 +91,7 @@ After preparing the environment, the next steps are required to run the examples
 
     1. If the minion SoC configuration has the SD peripheral, you will need to create the a clock wizard. The necessary information for generating the IP are found in the port section.
 
-    1. If the fault injection with the vio parameter is used, the VIO module should be created with the following parameters: name: vio0 and one output port with 1 bit width.
+    2. If the fault injection with the vio parameter is used, the VIO module should be created with the following parameters: name: vio0 and one output port with 1 bit width.
 
   3. Select the software (minimal vs minimal\_cls you want to run in the SoC by changing the code.v & data.v files.
 
@@ -500,13 +500,13 @@ The CLS configuration in core is enabled by setting the core_lockstep parameter 
 
 The templates were derived from the minion_soc.sv. Each template could have:
 
-a) a port template that defines the module's I/O ports, if the module has I/O ports.
+1. a port template that defines the module's I/O ports, if the module has I/O ports.
 
-b) an instance template that defines the peripheral, along with any variable that is needed. This template usually has the read SFRs and the memory region that it uses. Finally if the peripheral could be used multiple times e.g. UART, all the names of variables and modules uses a peripheral_number template variable in order to distinguish itself from each different peripheral instance.
+2. an instance template that defines the peripheral, along with any variable that is needed. This template usually has the read SFRs and the memory region that it uses. Finally if the peripheral could be used multiple times e.g. UART, all the names of variables and modules uses a peripheral_number template variable in order to distinguish itself from each different peripheral instance.
 
-c) an init template that has any register that needs to have a specific value at reset.
+3. an init template that has any register that needs to have a specific value at reset.
 
-d) a bus template that has holds all the write SFRs.
+4. a bus template that has holds all the write SFRs.
 
 Any custom peripheral could be added by implementing any of the above templates.
 
