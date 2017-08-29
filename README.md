@@ -241,9 +241,7 @@ Moreover it was found in multiple places in the minion_soc, that the core_lsu_re
 
 ## UART status
 
-The UART status SFR (memory location 0x300.000) has a lot of information about the state of the UART. This included the uart_wrcount variable that shows the number of the incoming bytes stored in FIFO. IMO the number of available bytes in the FIFO is much more critical information. The uart_rdcount shows the number of bytes that are read from the software. I replaced the uart_wrcount with the uart_rdata_avail that holds the available bytes in the FIFO. The information is taken by subtracting the uart_wrcount and
-
-uart_rdcount.
+The UART status SFR (memory location 0x300.000) has a lot of information about the state of the UART. This included the uart_wrcount variable that shows the number of the incoming bytes stored in FIFO. IMO the number of available bytes in the FIFO is much more critical information. The uart_rdcount shows the number of bytes that are read from the software. I replaced the uart_wrcount with the uart_rdata_avail that holds the available bytes in the FIFO. The information is taken by subtracting the uart_wrcount and uart_rdcount.
 
 ## Peripheral modularisation.
 
@@ -265,27 +263,14 @@ For the first experimentations with the platform, I created an assembly program.
 
 The first experiment was to see the inner workings of the SoC and if everything was ok. For that reason a very simple program was loaded in the simulator. The program binary was loaded by hand, using the initial function of verilog, in the mem_tb module. The program did a continuous increment on the values of the x1 register. Using the signals generated from the simulation, I was able to verify to correct operation by looking into the instruction and data bus signals.
 
-<table>
-  <tr>
-    <td>_start:</td>
-  </tr>
-  <tr>
-    <td>nop</td>
-  </tr>
-  <tr>
-    <td>addi x1, x1, 1</td>
-  </tr>
-  <tr>
-    <td>nop</td>
-  </tr>
-  <tr>
-    <td>nop</td>
-  </tr>
-  <tr>
-    <td>j _start</td>
-  </tr>
-</table>
-
+'''
+  _start:
+    nop
+    addi x1, x1, 1
+    nop
+    nop
+    j _start
+'''
 
 Finally I wanted to see if my understanding of the core and peripherals connection was correct. For that reason I made a simple program that transmits a "Hello minion" message through the UART and then blinks the LEDs. The program it’s very simple, it first loads SFR and RAM variables memory addresses into registers. Those registers will be used later to access the contents of the SFR's through indirect memory addressing. The _print_str_ loop transmits the message, the _loop blinks the LEDs and after that the delay loops for ~100ms. You can find the code [here](https://github.com/nchronas/minion_subsystem/blob/01475229ce16e7232b76e183a83fb275c206d63a/software/asm_test/test.asm).
 
