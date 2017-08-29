@@ -59,23 +59,23 @@ The code generation project uses python 2.7 and the jinja2 templating engine. Ji
 
 After preparing the environment, the next steps are required to run the examples.
 
-1. First we must select the correct code. Go the minion_subsystem folder and switch to the core-lockstep-codegen branch using `git checkout core-lockstep-codegen`
+1. First we must select the correct code. Go the minion\_subsystem folder and switch to the core-lockstep-codegen branch using `git checkout core-lockstep-codegen`
 
 2. The generator will produce the files needed depending on the config used. Go to the socgen folder and run `python generator.py config`. In the place of config select the predefined configs found in the conf folder or make a custom. Note that the argument in the generator should have the conf folder as well. E.g. `python generator.py conf/cls_config.json`. There are 4 configuration files found in the folder, please select the one you like.
 
-  1. The minion_config has the parameters for generating the equivalent of the minion-v0.4. This config can’t be used with verilator.
+  1. The minion\_config has the parameters for generating the equivalent of the minion-v0.4. This config can’t be used with verilator.
 
-  2. At the moment the verilator can only be used with the GPIO and UART peripherals. This verilator_config generates a minion SoC for use in verilator.
+  2. At the moment the verilator can only be used with the GPIO and UART peripherals. This verilator\_config generates a minion SoC for use in verilator.
 
-  3. The cls_config generates the SoC with core lock step and identical configuration with the minion-v0.4. Again this config can’t be used with verilator.
+  3. The cls\_config generates the SoC with core lock step and identical configuration with the minion-v0.4. Again this config can’t be used with verilator.
 
-  4. The cls_finj_config generates the SoC with fault injection functionality, used in testing.
+  4. The cls\_finj\_config generates the SoC with fault injection functionality, used in testing.
 
-3. We now compile the examples running in the minion SoC. The examples are in the software/minimal and software/minimal_cls  folder. Compile the minimal c and minimal c cls by running make inside each folder. If everything works ok, the code.v & data.v files  should have been created.
+3. We now compile the examples running in the minion SoC. The examples are in the software/minimal and software/minimal\_cls  folder. Compile the minimal c and minimal c cls by running make inside each folder. If everything works ok, the code.v & data.v files  should have been created.
 
 4. For running verilator, the following steps are required.
 
-  1. This step is not necessary but it will make simulation a lot quicker by shortening the delay time. Replace the REAL_DELAY with the SIM_DELAY found in the delay function in the minion.c file  and recompile the software.
+  1. This step is not necessary but it will make simulation a lot quicker by shortening the delay time. Replace the REAL\_DELAY with the SIM\_DELAY found in the delay function in the minion.c file  and recompile the software.
 
   2. Next the verilator simulator is compiled. Go to the vsim folder and run "make" for running the minion SoC without CLS. Running “make cls” will produce the simulation for the CLS configuration and finally the “make finj” will be used for CLS with fault injection. Note that the configuration would have to be the same with the one generated e.g. running the SoC without CLS while compiling verilator with cls, will result in an error.
 
@@ -85,7 +85,7 @@ After preparing the environment, the next steps are required to run the examples
 
 5. For uploading the program to the FPGA, follow the next steps.
 
-  1. Start vivado and select the project found in vivado/minion_top_arty.xpr.
+  1. Start vivado and select the project found in vivado/minion\_top\_arty.xpr.
 
   2. Some Xilinx IPs are not included in repository and the user would have to create them.
 
@@ -93,7 +93,7 @@ After preparing the environment, the next steps are required to run the examples
 
     1. If the fault injection with the vio parameter is used, the VIO module should be created with the following parameters: name: vio0 and one output port with 1 bit width.
 
-  3. Select the software (minimal vs minimal_cls you want to run in the SoC by changing the code.v & data.v files.
+  3. Select the software (minimal vs minimal\_cls you want to run in the SoC by changing the code.v & data.v files.
 
   4. Select the Generate bitstream command in the vivado. Note that this process might take a while (~10 minutes in my computer).
 
@@ -113,15 +113,15 @@ This section contains information for understanding the minion SoC. An [overview
 
 ## project structure
 
-The minion_subsystem holds the software for the minion SoC. The pulpino folder has all the HDL files for the PULPino core, running in the minion SoC. The verilog folder has the verilog code used from the minion SoC. The vivado has all the related files that is used from the vivido suite.
+The minion\_subsystem holds the software for the minion SoC. The pulpino folder has all the HDL files for the PULPino core, running in the minion SoC. The verilog folder has the verilog code used from the minion SoC. The vivado has all the related files that is used from the vivido suite.
 
 The romgen folder has the code for the rom generation software. The project uses OCML and takes the binaries generated from the C compiler and shapes them in verilog files, in a form that can be used from the tools.
 
 the software folder has the C software for the minion SoC. The hello project outputs a message through the UART but unfortunately currently doesn’t generate the code.v & data.v for use in a FPGA. The bootstrap project has all the functionality, used from the rocket core and the lowRISC SoC.
 
-One of the most important files is the minion_soc.sv. It has all the code integrating the core with the RAM/ROM and the peripherals, thus creating the SoC.
+One of the most important files is the minion\_soc.sv. It has all the code integrating the core with the RAM/ROM and the peripherals, thus creating the SoC.
 
-The CLS code generation branch has some extra folders. The socgen are for the code generation project. The software has the minimal C and minimal_cls C projects and finally the vsim folder has the all the files for the verilator.
+The CLS code generation branch has some extra folders. The socgen are for the code generation project. The software has the minimal C and minimal\_cls C projects and finally the vsim folder has the all the files for the verilator.
 
 ## Core
 
@@ -140,13 +140,13 @@ The coremem design assumes that all peripherals are able to write the data into 
 
 ## Bus
 
-The minion SoC uses a custom tight coupled bus for communication of the core with the peripherals and the memories. For the core’s instruction bus, the ROM is directly connected with the coremem_i module that handles the protocol handshakes.
+The minion SoC uses a custom tight coupled bus for communication of the core with the peripherals and the memories. For the core’s instruction bus, the ROM is directly connected with the coremem\_i module that handles the protocol handshakes.
 
 The bus addresses are taken from the core’s 4 MSBs data bus addresses in one hot configuration, creating 16 distinct memory regions. Each of the 16 memory regions are mapped to each peripheral and memories.
 
-The peripherals and memories are using the  one_hot_rdata[15:0] array that each position is related with the equivalent address, to store the preselected information. That way the peripheral's SFRs are created. The read operation and bus address creation happens in a always_comb block. The 16 loops that happens in the for loop corresponds to the 16 bus addresses. The address is created when the core_lsu_addr[23:20] is equal to the address number. Finally the correct read data is stored in the core_lsu_rdata, selecting the one_hot_data_addr array element that is equal to the bus address.
+The peripherals and memories are using the  one\_hot\_rdata[15:0] array that each position is related with the equivalent address, to store the preselected information. That way the peripheral's SFRs are created. The read operation and bus address creation happens in a always\_comb block. The 16 loops that happens in the for loop corresponds to the 16 bus addresses. The address is created when the core\_lsu\_addr[23:20] is equal to the address number. Finally the correct read data is stored in the core\_lsu\_rdata, selecting the one\_hot\_data\_addr array element that is equal to the bus address.
 
-Writing operations are triggered when the we_d signal is set, along with the corresponding one_hot_data_addr. The peripheral write operations happens in the following always block that is triggered in a reset or a positive cycle edge. If a reset is set, the SFRs take a default value.
+Writing operations are triggered when the we\_d signal is set, along with the corresponding one\_hot\_data\_addr. The peripheral write operations happens in the following always block that is triggered in a reset or a positive cycle edge. If a reset is set, the SFRs take a default value.
 
 <center>
 <table>
@@ -193,7 +193,7 @@ Writing operations are triggered when the we_d signal is set, along with the cor
 </table>
 </center>
 
-In order to modify the bus and add more memory regions, the user should change the width of the one_hot_data_addr keeping it equal with the one_hot_rdata, adding more MSBs of core_lsu_addr to the one_hot_data_addr address generation, modify the for loop generation and . all changes should happen in multiples of 2. Since the RAM and ROM locations are hardwired to the C linker scripts, extra care should be taken that the RAM & ROM hold the same memory region. Off course any modification in the memory locations should be reflected in the software and the SFRs addresses.  
+In order to modify the bus and add more memory regions, the user should change the width of the one\_hot\_data\_addr keeping it equal with the one\_hot\_rdata, adding more MSBs of core\_lsu\_addr to the one\_hot\_data\_addr address generation, modify the for loop generation and . all changes should happen in multiples of 2. Since the RAM and ROM locations are hardwired to the C linker scripts, extra care should be taken that the RAM & ROM hold the same memory region. Off course any modification in the memory locations should be reflected in the software and the SFRs addresses.  
 
 ## memories
 
@@ -235,21 +235,21 @@ During the designing phase of the CLS configuration, I identified some improveme
 
 ## Coremem
 
-While examining the coremem module, I saw that the code had unreached states (WRITE_DATA, WRITE_ADDR) because of constant assignment of aw_ready_i, ar_ready_i and w_ready_i signals. The states could further reduced from READ_WAIT, WRITE_WAIT to WAIT but I left it that way because I think code is more readable. Removing the unnecessary code simplified the module, which was then now reduced to a simple one cycle delay.
+While examining the coremem module, I saw that the code had unreached states (WRITE\_DATA, WRITE\_ADDR) because of constant assignment of aw\_ready\_i, ar\_ready\_i and w\_ready\_i signals. The states could further reduced from READ\_WAIT, WRITE\_WAIT to WAIT but I left it that way because I think code is more readable. Removing the unnecessary code simplified the module, which was then now reduced to a simple one cycle delay.
 
-Moreover it was found in multiple places in the minion_soc, that the core_lsu_req&core_lsu_we signals were used to access a peripheral in the case of a data bus write. That functionality was identical with the use of the coremem_d’s signal we_d. So all the signals were replaces from the we_d signal. That modification gives a clearer code, with the write of peripherals trigged only from one place.
+Moreover it was found in multiple places in the minion\_soc, that the core\_lsu\_req&core\_lsu\_we signals were used to access a peripheral in the case of a data bus write. That functionality was identical with the use of the coremem\_d’s signal we\_d. So all the signals were replaces from the we\_d signal. That modification gives a clearer code, with the write of peripherals trigged only from one place.
 
 ## UART status
 
-The UART status SFR (memory location 0x300.000) has a lot of information about the state of the UART. This included the uart_wrcount variable that shows the number of the incoming bytes stored in FIFO. IMO the number of available bytes in the FIFO is much more critical information. The uart_rdcount shows the number of bytes that are read from the software. I replaced the uart_wrcount with the uart_rdata_avail that holds the available bytes in the FIFO. The information is taken by subtracting the uart_wrcount and uart_rdcount.
+The UART status SFR (memory location 0x300.000) has a lot of information about the state of the UART. This included the uart\_wrcount variable that shows the number of the incoming bytes stored in FIFO. IMO the number of available bytes in the FIFO is much more critical information. The uart\_rdcount shows the number of bytes that are read from the software. I replaced the uart\_wrcount with the uart\_rdata\_avail that holds the available bytes in the FIFO. The information is taken by subtracting the uart\_wrcount and uart\_rdcount.
 
 ## Peripheral modularisation.
 
-The SoC uses a custom tight coupled bus for the connection not based on AXI. In the minion_soc.sv there is the bus implementation and the connection of the core, with the RAM,ROM and the peripherals used. This makes the code less clear and more difficult add new peripherals. I made an attempt to separate the bus logic and the peripherals from the minion SoC, so the code is more clear and for me to better understand the bus logic. This attempt provided useful information that was eventually used in the code generation. IMO this approach lead to more clear & concise code.
+The SoC uses a custom tight coupled bus for the connection not based on AXI. In the minion\_soc.sv there is the bus implementation and the connection of the core, with the RAM,ROM and the peripherals used. This makes the code less clear and more difficult add new peripherals. I made an attempt to separate the bus logic and the peripherals from the minion SoC, so the code is more clear and for me to better understand the bus logic. This attempt provided useful information that was eventually used in the code generation. IMO this approach lead to more clear & concise code.
 
-The peripheral bus has the bus address, bus_write and bus_read array, which have the same functionality as the original bus signals. The extra bus_we & bus_ce arrays, are added. The variables are used to signal a read or write operation in the bus.  Each peripheral must access the corresponding bus_we & bus_ce by selecting the correct array member. The peripherals are then responsible to read or write the correct SFR based on the bus address.
+The peripheral bus has the bus address, bus\_write and bus\_read array, which have the same functionality as the original bus signals. The extra bus\_we & bus\_ce arrays, are added. The variables are used to signal a read or write operation in the bus.  Each peripheral must access the corresponding bus\_we & bus\_ce by selecting the correct array member. The peripherals are then responsible to read or write the correct SFR based on the bus address.
 
-The memconfig module (the naming could had been better) has all the bus functionality and is responsible for the core and peripheral interaction. The module generates the bus_we and bus_ce signals. The module also integrates the coremem_d, the module that handles the core's data bus operations. The signals are generated in the similar way as the data read signals in the core's data bus.
+The memconfig module (the naming could had been better) has all the bus functionality and is responsible for the core and peripheral interaction. The module generates the bus\_we and bus\_ce signals. The module also integrates the coremem\_d, the module that handles the core's data bus operations. The signals are generated in the similar way as the data read signals in the core's data bus.
 
 Note that this code was left unfinished so it is possible that it contains bugs. In the future that work could be merged with the code generation in the form of templates.
 
@@ -261,7 +261,7 @@ This section describes the software developed for running in the minion SoC.
 
 For the first experimentations with the platform, I created an assembly program. The reasons behind using assembly: a) Learning assembly, gives you a better understanding of the architecture. b) For easy programs, such as the one I created, the manual written assembly code is significant less complex than the equivalent produced from a compiler. c) The lack of a JTAG module lead to most of the debugging happen through the studying of waveforms and hex values. Being familiar with the assembly program and the assembly structure made debugging a lot easier. d) It was a lot easier to setup the environment for the assembler than the compiler.
 
-The first experiment was to see the inner workings of the SoC and if everything was ok. For that reason a very simple program was loaded in the simulator. The program binary was loaded by hand, using the initial function of verilog, in the mem_tb module. The program did a continuous increment on the values of the x1 register. Using the signals generated from the simulation, I was able to verify to correct operation by looking into the instruction and data bus signals.
+The first experiment was to see the inner workings of the SoC and if everything was ok. For that reason a very simple program was loaded in the simulator. The program binary was loaded by hand, using the initial function of verilog, in the mem\_tb module. The program did a continuous increment on the values of the x1 register. Using the signals generated from the simulation, I was able to verify to correct operation by looking into the instruction and data bus signals.
 
 ```
   _start:
@@ -397,7 +397,7 @@ One of the advantages of triple core lock step is that by having 3 cores using v
 
 The core lock step implementation was pretty straightforward after a better understanding of the minion SoC and the pulpino core was achieved.
 
-The CLS configuration was placed in the minion_cls.sv module. The module has identical I/O with the pulpino core and is meant to replace the pulpino core in the minion_soc.sv. The only modification required in order to use the CLS configuration is by adding the _cls extension in the riscv_core of the minion_soc.sv. That way minimal modification of the minion_soc is ensured. The module has 3 pulpino core instances, the cls_cmp_unit that compares the core’s output and signals a fault and the cls_handler_unit that implements the fault recovery.
+The CLS configuration was placed in the minion\_cls.sv module. The module has identical I/O with the pulpino core and is meant to replace the pulpino core in the minion\_soc.sv. The only modification required in order to use the CLS configuration is by adding the \_cls extension in the riscv\_core of the minion\_soc.sv. That way minimal modification of the minion\_soc is ensured. The module has 3 pulpino core instances, the cls\_cmp\_unit that compares the core’s output and signals a fault and the cls\_handler\_unit that implements the fault recovery.
 
 The cores are configured in 1 master and 2 slaves. The inputs are connected directly from the module top. The 3 core’s output are connected to the cls compare unit but only the master core is connected to the module’s output ports. Extra wires are only required by the slave cores and the naming is differentiated from the cls1 and cls2 extension. The only reason that the cores are separated into 1 master and 2 slaves is by connecting the master’s outputs directly to the modules output port and not by another module, it leads to less and more clear code.
 
@@ -413,7 +413,7 @@ A reset source SFR was added, the SFR has 0 if the reset was triggered from a no
 
 Faults were simulated by injecting errors in the CLS design. These tests were the only way to ensure that the design was working. The errors are created by modifying the values in variables during runtime usually by introducing multiplexers. To my knowledge there isn’t a framework that could make automated integration of the multiplexers in the CLS design, so the integration would had to be made manually. Introducing fault injection in random places in the pulpino core would have been a difficult and cumbersome task so it was avoided. A more plausible way was to inject errors in the cores output.
 
-The fault_injection_assist module was introduced in the minion_cls.sv. The module overrides the cores outputs and when a fault injection was issued it toggled the selected signal. The new signals are defined in the minion_cls module. In order to use the fault injection, a "_finj" should be added in the signal name, going to the cls comparison module. The modules internal implementation uses the fault_injection_mux module which is a simple multiplexer. In normal operation, the multiplexer forwarded the incoming signal value to the output. If a fault injection was requested and the index matched the multiplexer, it toggled the incoming signal’s value. The first implementations tried to modify the existing signals kby XORing to itself but that created an infinite feedback loop.
+The fault_injection_assist module was introduced in the minion_cls.sv. The module overrides the cores outputs and when a fault injection was issued it toggled the selected signal. The new signals are defined in the minion_cls module. In order to use the fault injection, a "\_finj" should be added in the signal name, going to the cls comparison module. The modules internal implementation uses the fault_injection_mux module which is a simple multiplexer. In normal operation, the multiplexer forwarded the incoming signal value to the output. If a fault injection was requested and the index matched the multiplexer, it toggled the incoming signal’s value. The first implementations tried to modify the existing signals kby XORing to itself but that created an infinite feedback loop.
 
 One key issue was finding the best approach for the fault injection timing. Without a model of the SEU generation in space, the best way was to inject faults pseudo randomly in a time range that would make sense. The first attempt was to use a hardware pseudo random generator but it was quickly abandoned for a more swift solution, implemented in software. In the beginning all the output signals were exposed to a fault injection but in order to make testing simplier and reduce the used FPGA resources, only the data and instruction bus  request and address signals were used.
 
