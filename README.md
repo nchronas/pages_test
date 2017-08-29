@@ -1,33 +1,4 @@
 
-<center>
-<table>
-  <tr>
-    <td>abbreviations</td>
-  </tr>
-  <tr>
-    <td>SFR</td>
-    <td>Special Function Register</td>
-  </tr>
-  <tr>
-    <td>CLS</td>
-    <td>Core Lock Step</td>
-  </tr>
-  <tr>
-    <td>SoC</td>
-    <td>System On Chip</td>
-  </tr>
-  <tr>
-    <td>PR</td>
-    <td>Pull Request</td>
-  </tr>
-  <tr>
-    <td>WIP</td>
-    <td>work in progress</td>
-  </tr>
-</table>
-</center>
-
-
 # Introduction
 
 The upgraded role of cubesats, fueled by technological advances in the aerospace industry, that lower launch costs, has opened access to space for a wider audience. Space is a harsh environment for microelectronics. Radiation induced Single Event Upsets can trigger bit flips in memory that could have catastrophic consequences rendering a cubesat useless. Current state of fault tolerance is to either use Rad-Hard electronics that their cost makes it suitable only for high profile missions or the use of Commercial off-the-shelf electronics that offer little protection.
@@ -56,12 +27,10 @@ All the work was done in a virtual machine based on ubuntu 16.04 LTS, a Vivado 2
 
 Verilator was installed based on these [instructions](https://www.veripool.org/projects/verilator/wiki/Installing), as recommended by the lowRISC [documentation](http://www.lowrisc.org/docs/untether-v0.2/verilator/). I used the gtkwave for viewing the waveforms generated from verilator. Simply apt-get install gtkawave for using it. Verilator needs The following environment variables are needed, in order to run.
 
-<table>
-  <tr>
-    <td>export VERILATOR_ROOT=/path_to_folder/verilator
-export PATH=$PATH:$VERILATOR_ROOT/bin</td>
-  </tr>
-</table>
+```
+export VERILATOR_ROOT=/path_to_folder/verilator
+export PATH=$PATH:$VERILATOR_ROOT/bin
+```
 
 
 ### Vivado
