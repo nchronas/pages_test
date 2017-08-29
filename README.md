@@ -1,31 +1,3 @@
-pages_test
-<table>
-  <tr>
-    <td>abbreviations</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>SFR</td>
-    <td>Special Function Register</td>
-  </tr>
-  <tr>
-    <td>CLS</td>
-    <td>Core Lock Step</td>
-  </tr>
-  <tr>
-    <td>SoC</td>
-    <td>System On Chip</td>
-  </tr>
-  <tr>
-    <td>PR</td>
-    <td>Pull Request</td>
-  </tr>
-  <tr>
-    <td>WIP</td>
-    <td>work in progress</td>
-  </tr>
-</table>
-
 
 # Introduction
 
@@ -55,12 +27,10 @@ All the work was done in a virtual machine based on ubuntu 16.04 LTS, a Vivado 2
 
 Verilator was installed based on these [instructions](https://www.veripool.org/projects/verilator/wiki/Installing), as recommended by the lowRISC [documentation](http://www.lowrisc.org/docs/untether-v0.2/verilator/). I used the gtkwave for viewing the waveforms generated from verilator. Simply apt-get install gtkawave for using it. Verilator needs The following environment variables are needed, in order to run.
 
-<table>
-  <tr>
-    <td>export VERILATOR_ROOT=/path_to_folder/verilator
-export PATH=$PATH:$VERILATOR_ROOT/bin</td>
-  </tr>
-</table>
+```
+export VERILATOR_ROOT=/path_to_folder/verilator
+export PATH=$PATH:$VERILATOR_ROOT/bin
+```
 
 
 ### Vivado
