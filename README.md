@@ -85,19 +85,19 @@ After preparing the environment, the next steps are required to run the examples
 
 5. For uploading the program to the FPGA, follow the next steps.
 
-  1. Start vivado and select the project found in vivado/minion\_top\_arty.xpr.
+    1. Start vivado and select the project found in vivado/minion\_top\_arty.xpr.
 
-  2. Some Xilinx IPs are not included in repository and the user would have to create them.
+    2. Some Xilinx IPs are not included in repository and the user would have to create them.
 
-    1. If the minion SoC configuration has the SD peripheral, you will need to create the a clock wizard. The necessary information for generating the IP are found in the port section.
+        1. If the minion SoC configuration has the SD peripheral, you will need to create the a clock wizard. The necessary information for generating the IP are found in the port section.
 
-    2. If the fault injection with the vio parameter is used, the VIO module should be created with the following parameters: name: vio0 and one output port with 1 bit width.
+        2. If the fault injection with the vio parameter is used, the VIO module should be created with the following parameters: name: vio0 and one output port with 1 bit width.
 
-  3. Select the software (minimal vs minimal\_cls you want to run in the SoC by changing the code.v & data.v files.
+    3. Select the software (minimal vs minimal\_cls you want to run in the SoC by changing the code.v & data.v files.
 
-  4. Select the Generate bitstream command in the vivado. Note that this process might take a while (~10 minutes in my computer).
+    4. Select the Generate bitstream command in the vivado. Note that this process might take a while (~10 minutes in my computer).
 
-  5. For uploading the bitstream to the Arty you have 2 options: first upload it through JTAG or store it in the onboard flash memory. On how to do it, see this [guide](https://reference.digilentinc.com/learn/programmable-logic/tutorials/arty-programming-guide/start) after step 2.8.
+    5. For uploading the bitstream to the Arty you have 2 options: first upload it through JTAG or store it in the onboard flash memory. On how to do it, see this [guide](https://reference.digilentinc.com/learn/programmable-logic/tutorials/arty-programming-guide/start) after step 2.8.
 
 6. Enjoy!
 
