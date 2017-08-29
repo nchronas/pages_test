@@ -541,7 +541,7 @@ The other critical factor for use in cubesats are the power dissipation. The add
 <center>
 <table>
   <tr>
-    <td>![alt_text](cls_graph.png)</td>
+    <td><image src="cls_graph.png"></td>
     <td>![alt_text](cls_util.png)</td>
   </tr>
   <tr>
