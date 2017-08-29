@@ -105,7 +105,7 @@ A note for vivado and Arty: programming the FPGA in the virtual machine was some
 
 ![alt_text](arty.gif)
 
-<image src="arty_term.gif" style=""width:200px>
+<image src="arty_term.gif" style=width:200px">
 
 ![alt_text](arty_term.gif)
 *Arty example program*
@@ -544,15 +544,15 @@ The other critical factor for use in cubesats are the power dissipation. The add
 <table>
   <tr>
     <td> <image src="cls_graph.png"> </td>
-    <td> <image src="cls_graph.png"> ![alt_text](cls_util.png)</td>
+    <td> <image src="cls_util.png"> </td>
   </tr>
   <tr>
     <td>(a)</td>
     <td>(b)</td>
   </tr>
   <tr>
-    <td><image src="cls_graph.png"> ![alt_text](graph.png)</td>
-    <td><image src="cls_graph.png"> ![alt_text](util.png)</td>
+    <td><image src="graph.png"> </td>
+    <td><image src="util.png"> </td>
   </tr>
   <tr>
     <td>(c)</td>
@@ -565,14 +565,14 @@ The other critical factor for use in cubesats are the power dissipation. The add
 <center>
 <table>
   <tr>
-    <td>![alt_text](cls_pwr.png)</td>
-    <td>![alt_text](cls_pwr_el.png)</td>
+    <td><image src="cls_pwr.png"></td>
+    <td><image src="cls_pwr_el.png"></td>
   </tr>
   <td>(a)</td>
   <td>(b)</td>
   <tr>
-    <td>![alt_text](pwr.png)</td>
-    <td>![alt_text](pwr_graph.png)</td>
+    <td><image src="pwr.png"></td>
+    <td><image src="pwr_graph.png"></td>
   </tr>
   <td>(c)</td>
   <td>(d)</td>
