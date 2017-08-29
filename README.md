@@ -106,6 +106,7 @@ A note for vivado and Arty: programming the FPGA in the virtual machine was some
 ![alt_text](arty.gif)
 
 ![alt_text](arty_term.gif)
+*Arty example program*
 
 # Minion SoC
 
@@ -130,6 +131,7 @@ The core is a modified PULPino core. It has the equivalent speed of an ARM corte
 The core has a separate instruction and data bus with the only difference is that the data bus has write functionality. The protocol is very simple. The bus has the standard clock, address, the incoming read data and the outgoing write data. The core starts a transaction by setting the appropriate values in the bus and issues a request. The peripheral responds with a grant signal when it has accepted the values. When the grant signal is set, the core can change the signals for the next transaction. When the peripheral has finished processing the transaction and if it’s a read operation has the set output in the bus, it issues the data valid flag.
 
 ![alt_text](pulp.png)
+*PULPino data bus transaction (image taken by the PULPino user manual)*
 
 
 ## Coremem
@@ -422,7 +424,7 @@ The first tests were made in verilator. The verilog top module was modified in o
 After the successful testing in the simulator, the design was tested in the actual hardware. A Xilinx VIO debug IP was used to trigger and verify the fault injection. The VIO IP connects the Arty board through JTAG to the Vivado suite in real time. There the VIO inputs were used to monitor critical signals in order to verify the correct behaviour of the CLS configuration. A VIO output was connected to the fault injection unit, there a button in Vivado was used to trigger a fault. The minion SoC with fault injection unit along with the VIO IP required more LUTs that there were available in the Arty FPGA, I had to removed the SD peripheral in order to free resources. Also the fault injection unit was modified to allow only one signal to be used, in order to limit  resources usage.
 
 ![alt_text](finj.png)
-
+*Fault injection in simulation. The fault is injected in the red cursor.*
 
 ## Packetcraft
 
