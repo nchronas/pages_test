@@ -129,14 +129,7 @@ The core is a modified PULPino core. It has the equivalent speed of an ARM corte
 
 The core has a separate instruction and data bus with the only difference is that the data bus has write functionality. The protocol is very simple. The bus has the standard clock, address, the incoming read data and the outgoing write data. The core starts a transaction by setting the appropriate values in the bus and issues a request. The peripheral responds with a grant signal when it has accepted the values. When the grant signal is set, the core can change the signals for the next transaction. When the peripheral has finished processing the transaction and if it’s a read operation has the set output in the bus, it issues the data valid flag.
 
-<table>
-  <tr>
-    <td></td>
-  </tr>
-  <tr>
-    <td>PULPino data bus transaction (image taken by the PULPino user manual.</td>
-  </tr>
-</table>
+![alt_ text](pulp.png)
 
 
 ## Coremem
@@ -153,89 +146,9 @@ The bus addresses are taken from the core’s 4 MSBs data bus addresses in one h
 
 The peripherals and memories are using the  one_hot_rdata[15:0] array that each position is related with the equivalent address, to store the preselected information. That way the peripheral's SFRs are created. The read operation and bus address creation happens in a always_comb block. The 16 loops that happens in the for loop corresponds to the 16 bus addresses. The address is created when the core_lsu_addr[23:20] is equal to the address number. Finally the correct read data is stored in the core_lsu_rdata, selecting the one_hot_data_addr array element that is equal to the bus address.
 
-<table>
-  <tr>
-    <td>logic [15:0] one_hot_data_addr;
-logic [31:0] one_hot_rdata[15:0];
-
-always_comb begin:onehot
-  integer i;
-  core_lsu_rdata = 32'b0;
-  for (i = 0; i < 16; i++) begin
-    one_hot_data_addr[i] = core_lsu_addr[23:20] == i;
-    core_lsu_rdata |= (one_hot_data_addr[i] ? one_hot_rdata[i] : 32'b0);
-  end
-end
-
-assign one_hot_rdata[3] = {uart_wrcount,uart_almostfull,uart_full,uart_rderr,uart_wrerr,uart_fifo_data_out[8],is_trans,is_recv,~uart_empty,uart_fifo_data_out[7:0]};</td>
-  </tr>
-</table>
-
-
 Writing operations are triggered when the we_d signal is set, along with the corresponding one_hot_data_addr. The peripheral write operations happens in the following always block that is triggered in a reset or a positive cycle edge. If a reset is set, the SFRs take a default value.
 
-<table>
-  <tr>
-    <td>always @(posedge msoc_clk or negedge rstn)
-  if (!rstn)
-    begin
-    from_dip_reg <= 0;
-u_recv <= 0;
-core_lsu_addr_dly <= 0;
-sd_align_reg <= 0;
-sd_blkcnt_reg <= 0;
-sd_blksize_reg <= 0;
-sd_data_start_reg <= 0;
-sd_clk_din <= 0;
-sd_clk_den <= 0;
-sd_clk_dwe <= 0;
-sd_clk_daddr <= 0;
-sd_cmd_i_reg <= 0;
-sd_cmd_arg_reg <= 0;
-sd_cmd_setting_reg <= 0;
-sd_cmd_start_reg <= 0;
-sd_reset <= 0;
-sd_data_rst <= 0;
-sd_cmd_rst <= 0;
-sd_clk_rst <= 0;
-sd_cmd_timeout_reg <= 0;
-to_led <= 0;
-u_baud <= 16'd651;
-u_trans <= 1'b0;
-u_tx_byte <= 8'b0;
-    end
-   else
-     begin
-    from_dip_reg <= from_dip;
-u_recv <= received;
-core_lsu_addr_dly <= core_lsu_addr;
-if (we_d&one_hot_data_addr[6])
- case(core_lsu_addr[5:2])
-   0: sd_align_reg <= core_lsu_wdata;
-   1: sd_clk_din <= core_lsu_wdata;
-   2: sd_cmd_arg_reg <= core_lsu_wdata;
-   3: sd_cmd_i_reg <= core_lsu_wdata;
-   4: {sd_data_start_reg,sd_cmd_setting_reg[2:0]} <= core_lsu_wdata;
-   5: sd_cmd_start_reg <= core_lsu_wdata;
-   6: {sd_reset,sd_clk_rst,sd_data_rst,sd_cmd_rst} <= core_lsu_wdata;
-   7: sd_blkcnt_reg <= core_lsu_wdata;
-   8: sd_blksize_reg <= core_lsu_wdata;
-   9: sd_cmd_timeout_reg <= core_lsu_wdata;
-  10: {sd_clk_dwe,sd_clk_den,sd_clk_daddr} <= core_lsu_wdata;
- endcase
-if (we_d&one_hot_data_addr[7])
- to_led <= core_lsu_wdata;
-u_trans <= 1'b0;
-    if (we_d&one_hot_data_addr[2])
-      case(core_lsu_addr[5:2])
-        0: begin u_trans <= 1'b1; u_tx_byte <= core_lsu_wdata[7:0]; end
-        1: u_baud <= core_lsu_wdata;
-      endcase
-     end</td>
-  </tr>
-</table>
-
-
+<center>
 <table>
   <tr>
     <td>Type</td>
@@ -278,7 +191,7 @@ u_trans <= 1'b0;
     <td>10</td>
   </tr>
 </table>
-
+</center>
 
 In order to modify the bus and add more memory regions, the user should change the width of the one_hot_data_addr keeping it equal with the one_hot_rdata, adding more MSBs of core_lsu_addr to the one_hot_data_addr address generation, modify the for loop generation and . all changes should happen in multiples of 2. Since the RAM and ROM locations are hardwired to the C linker scripts, extra care should be taken that the RAM & ROM hold the same memory region. Off course any modification in the memory locations should be reflected in the software and the SFRs addresses.  
 
