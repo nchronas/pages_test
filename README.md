@@ -58,6 +58,7 @@ The code generation project uses python 2.7 and the jinja2 templating engine. Ji
 ## Running the examples
 
 ![alt_text](arty_term.gif)
+
 *Arty example program*
 
 After preparing the environment, the next steps are required to run the examples.
@@ -546,7 +547,7 @@ The other critical factor for use in cubesats are the power dissipation. The add
 ![alt_text](cls_pwr.png) ![alt_text](cls_pwr_el.png)
 ![alt_text](pwr.png) ![alt_text](pwr_graph.png)
 
-*Power usage: with CLS (a,b), without (c,d)*
+*Power usage: with CLS and without*
 
 
 
