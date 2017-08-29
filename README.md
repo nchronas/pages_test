@@ -35,7 +35,7 @@ export PATH=$PATH:$VERILATOR_ROOT/bin
 
 ### Vivado
 
-A guide about installing Vivado can be found in lowRISC documentation. One difference from the guide is that in my installation that I used the following command 'source /local/tool/Xilinx/Vivado/2015.4/.settings64-Vivado.sh'. It’s generally pretty straightforward installation but it took a while to finish. 
+A guide about installing Vivado can be found in lowRISC documentation. One difference from the guide is that in my installation that I used the following command `source /local/tool/Xilinx/Vivado/2015.4/.settings64-Vivado.sh`. It’s generally pretty straightforward installation but it took a while to finish. 
 
 ### Arty
 
