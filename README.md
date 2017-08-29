@@ -63,25 +63,25 @@ After preparing the environment, the next steps are required to run the examples
 
 2. The generator will produce the files needed depending on the config used. Go to the socgen folder and run `python generator.py config`. In the place of config select the predefined configs found in the conf folder or make a custom. Note that the argument in the generator should have the conf folder as well. E.g. `python generator.py conf/cls_config.json`. There are 4 configuration files found in the folder, please select the one you like.
 
-  1. The minion\_config has the parameters for generating the equivalent of the minion-v0.4. This config can’t be used with verilator.
+    1. The minion\_config has the parameters for generating the equivalent of the minion-v0.4. This config can’t be used with verilator.
 
-  2. At the moment the verilator can only be used with the GPIO and UART peripherals. This verilator\_config generates a minion SoC for use in verilator.
+    2. At the moment the verilator can only be used with the GPIO and UART peripherals. This verilator\_config generates a minion SoC for use in verilator.
 
-  3. The cls\_config generates the SoC with core lock step and identical configuration with the minion-v0.4. Again this config can’t be used with verilator.
+    3. The cls\_config generates the SoC with core lock step and identical configuration with the minion-v0.4. Again this config can’t be used with verilator.
 
-  4. The cls\_finj\_config generates the SoC with fault injection functionality, used in testing.
+    4. The cls\_finj\_config generates the SoC with fault injection functionality, used in testing.
 
 3. We now compile the examples running in the minion SoC. The examples are in the software/minimal and software/minimal\_cls  folder. Compile the minimal c and minimal c cls by running make inside each folder. If everything works ok, the code.v & data.v files  should have been created.
 
 4. For running verilator, the following steps are required.
 
-  1. This step is not necessary but it will make simulation a lot quicker by shortening the delay time. Replace the REAL\_DELAY with the SIM\_DELAY found in the delay function in the minion.c file  and recompile the software.
+    1. This step is not necessary but it will make simulation a lot quicker by shortening the delay time. Replace the REAL\_DELAY with the SIM\_DELAY found in the delay function in the minion.c file  and recompile the software.
 
-  2. Next the verilator simulator is compiled. Go to the vsim folder and run "make" for running the minion SoC without CLS. Running “make cls” will produce the simulation for the CLS configuration and finally the “make finj” will be used for CLS with fault injection. Note that the configuration would have to be the same with the one generated e.g. running the SoC without CLS while compiling verilator with cls, will result in an error.
+    2. Next the verilator simulator is compiled. Go to the vsim folder and run "make" for running the minion SoC without CLS. Running “make cls” will produce the simulation for the CLS configuration and finally the “make finj” will be used for CLS with fault injection. Note that the configuration would have to be the same with the one generated e.g. running the SoC without CLS while compiling verilator with cls, will result in an error.
 
-  3. Start the simulation by running `./run_sim.sh.` If the configuration is "finj" the simulation will provide a simple menu for triggering the fault injection. Stop the simulation by using ctrl^c.
+    3. Start the simulation by running `./run_sim.sh.` If the configuration is "finj" the simulation will provide a simple menu for triggering the fault injection. Stop the simulation by using ctrl^c.
 
-  4. You can view the waveforms generated from the simulation by running `gtkwave obj_dir/verilated.vcd`
+    4. You can view the waveforms generated from the simulation by running `gtkwave obj_dir/verilated.vcd`
 
 5. For uploading the program to the FPGA, follow the next steps.
 
