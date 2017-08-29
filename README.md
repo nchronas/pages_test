@@ -105,8 +105,9 @@ A note for vivado and Arty: programming the FPGA in the virtual machine was some
 
 ![alt_text](arty.gif)
 
+<div>
 <image src="arty_term.gif" style="width:360px"><br>
-
+</div>
 
 
 *Arty example program*
