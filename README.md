@@ -1,9 +1,8 @@
-pages_test
 
+<center>
 <table>
   <tr>
     <td>abbreviations</td>
-    <td></td>
   </tr>
   <tr>
     <td>SFR</td>
@@ -26,6 +25,7 @@ pages_test
     <td>work in progress</td>
   </tr>
 </table>
+</center>
 
 
 # Introduction
