@@ -105,6 +105,8 @@ A note for vivado and Arty: programming the FPGA in the virtual machine was some
 
 ![alt_text](arty.gif)
 
+<image src="arty_term.gif" style=""width:200px>
+
 ![alt_text](arty_term.gif)
 *Arty example program*
 
@@ -541,16 +543,16 @@ The other critical factor for use in cubesats are the power dissipation. The add
 <center>
 <table>
   <tr>
-    <td><image src="cls_graph.png"></td>
-    <td>![alt_text](cls_util.png)</td>
+    <td> <image src="cls_graph.png"> </td>
+    <td> <image src="cls_graph.png"> ![alt_text](cls_util.png)</td>
   </tr>
   <tr>
     <td>(a)</td>
     <td>(b)</td>
   </tr>
   <tr>
-    <td>![alt_text](graph.png)</td>
-    <td>![alt_text](util.png)</td>
+    <td><image src="cls_graph.png"> ![alt_text](graph.png)</td>
+    <td><image src="cls_graph.png"> ![alt_text](util.png)</td>
   </tr>
   <tr>
     <td>(c)</td>
