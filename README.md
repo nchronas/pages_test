@@ -103,9 +103,9 @@ After preparing the environment, the next steps are required to run the examples
 
 A note for vivado and Arty: programming the FPGA in the virtual machine was sometimes unstable. When there was an issue I simply restarted the virtual machine.
 
-![alt_ text](Arty.gif)
+![alt_text](Arty.gif)
 
-![alt_ text](Arty_term.gif)
+![alt_text](Arty_term.gif)
 
 # Minion SoC
 
@@ -129,7 +129,7 @@ The core is a modified PULPino core. It has the equivalent speed of an ARM corte
 
 The core has a separate instruction and data bus with the only difference is that the data bus has write functionality. The protocol is very simple. The bus has the standard clock, address, the incoming read data and the outgoing write data. The core starts a transaction by setting the appropriate values in the bus and issues a request. The peripheral responds with a grant signal when it has accepted the values. When the grant signal is set, the core can change the signals for the next transaction. When the peripheral has finished processing the transaction and if it’s a read operation has the set output in the bus, it issues the data valid flag.
 
-![alt_ text](pulp.png)
+![alt_text](pulp.png)
 
 
 ## Coremem
