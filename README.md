@@ -103,9 +103,9 @@ After preparing the environment, the next steps are required to run the examples
 
 A note for vivado and Arty: programming the FPGA in the virtual machine was sometimes unstable. When there was an issue I simply restarted the virtual machine.
 
-![alt_text](Arty.gif)
+![alt_text](arty.gif)
 
-![alt_text](Arty_term.gif)
+![alt_text](arty_term.gif)
 
 # Minion SoC
 
