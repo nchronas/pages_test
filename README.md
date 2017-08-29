@@ -540,10 +540,8 @@ One of the key metrics of any protection techniques, is the changes in resources
 
 The other critical factor for use in cubesats are the power dissipation. The added 8mW is not an issue. Also the general power dissipation makes it usable for 2U cubesat, as In [UPSat](https://upsat.gr/) the onboard computer used 0.198W.
 
-![alt_text](cls_graph.png)
-*(a)*
-![alt_text](cls_util.png)
-*(b)*
+| ![alt_text](cls_graph.png) | ![alt_text](cls_util.png) |
+|           *(a)*            |           *(b)*           |
 ![alt_text](graph.png)
 *(c)*
 ![alt_text](util.png)
